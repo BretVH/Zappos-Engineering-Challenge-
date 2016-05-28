@@ -1,4 +1,4 @@
-package zappos_software_engineering_challenge;
+package zappos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,29 +8,32 @@ import java.util.List;
  * assignment, which is consistent and complete with respect to a CSP. This
  * abstract class provides the central interface method and additionally an
  * implementation of an observer mechanism.
- * 
+ *
  * @author Ruediger Lunde
  */
 public abstract class SolutionStrategy {
-	List<CSPStateListener> listeners = new ArrayList<CSPStateListener>();
 
-	public void addCSPStateListener(CSPStateListener listener) {
-		listeners.add(listener);
-	}
+    List<CSPStateListener> listeners = new ArrayList<>();
 
-	public void removeCSPStateListener(CSPStateListener listener) {
-		listeners.remove(listener);
-	}
+    public void addCSPStateListener(CSPStateListener listener) {
+        listeners.add(listener);
+    }
 
-	protected void fireStateChanged(CSP csp) {
-		for (CSPStateListener listener : listeners)
-			listener.stateChanged(csp.copyDomains());
-	}
+    public void removeCSPStateListener(CSPStateListener listener) {
+        listeners.remove(listener);
+    }
 
-	protected void fireStateChanged(Assignment assignment, CSP csp) {
-		for (CSPStateListener listener : listeners)
-			listener.stateChanged(assignment.copy(), csp.copyDomains());
-	}
+    protected void fireStateChanged(CSP csp) {
+        listeners.stream().forEach((listener) -> {
+            listener.stateChanged(csp.copyDomains());
+        });
+    }
 
-	public abstract Assignment solve(CSP csp);
+    protected void fireStateChanged(Assignment assignment, CSP csp) {
+        listeners.stream().forEach((listener) -> {
+            listener.stateChanged(assignment.copy(), csp.copyDomains());
+        });
+    }
+
+    public abstract Assignment solve(CSP csp);
 }

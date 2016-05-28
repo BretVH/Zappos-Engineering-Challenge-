@@ -1,37 +1,35 @@
-package zappos_software_engineering_challenge;
+package zappos;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Represents a binary constraint which forbids equal values.
- * 
+ *
  * @author Ruediger Lunde
+ * @author Bret Van Hof
  */
 public class IsLessThanConstraint implements Constraint {
 
-	private List<Variable> scope;
-        private double constrainingValue;
+    private final List<Variable> scope;
+    private final double constrainingValue;
 
-	public IsLessThanConstraint(List<Variable> myVars, double finalPrice) 
-        {
-            
-	    scope = myVars;
-            constrainingValue = finalPrice;
-	}
+    public IsLessThanConstraint(List<Variable> myVars, double finalPrice) {
 
-	@Override
-	public List<Variable> getScope() {
-		return scope;
-	}
+        scope = myVars;
+        constrainingValue = finalPrice;
+    }
 
-	@Override
-	public boolean isSatisfiedWith(Assignment assignment) {
-		Double value1 = 0.00;
-                for(Variable var1 : scope)
-                    value1 += (Double)assignment.getAssignment(var1);
-		return value1 == null || 
-                        value1 < constrainingValue;
-	}
-        
+    @Override
+    public List<Variable> getScope() {
+        return scope;
+    }
+
+    @Override
+    public boolean isSatisfiedWith(Assignment assignment) {
+        Double value = 0.00;
+        value = scope.stream().map((var1) -> (Double) assignment.getAssignment
+            (var1)).reduce(value, (accumulator, _item) -> accumulator + _item);
+        return value == null || value < constrainingValue;
+    }
+
 }
