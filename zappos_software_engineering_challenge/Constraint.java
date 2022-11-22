@@ -1,4 +1,4 @@
-package zappos_software_engineering_challenge;
+package zappos;
 
 import java.util.List;
 
@@ -7,16 +7,27 @@ import java.util.List;
  * variables. Each constraint consists of a pair <scope, rel>, where scope is a
  * tuple of variables that participate in the constraint and rel is a relation
  * that defines the values that those variables can take on.
- * 
+ *
  * Note: Implementations of this interface define the different kinds of
  * relations that constraints can represent.
- * 
+ *
  * @author Ruediger Lunde
+ * @author Bret Van Hof
  */
 public interface Constraint {
-	/** Returns a tuple of variables that participate in the constraint. */
-	List<Variable> getScope();
 
-	/** Constrains the values that the variables can take on. */
-	boolean isSatisfiedWith(Assignment assignment);
+    /**
+     * Returns a tuple of variables that participate in the constraint.
+     *
+     * @return
+     */
+    List<Variable> getScope();
+
+    /**
+     * Constrains the values that the variables can take on.
+     *
+     * @param assignment
+     * @return
+     */
+    boolean isSatisfiedWith(Assignment assignment);
 }
